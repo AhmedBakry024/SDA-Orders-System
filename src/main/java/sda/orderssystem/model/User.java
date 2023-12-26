@@ -3,16 +3,19 @@ package sda.orderssystem.model;
 public class User {
 
 	private String name;
-	private int age;
     private int id;
     private String address;
     private String password;
     private String email;
     private String phone;
     private Double balance;
-    
 
-	public Double getBalance() {
+    public User(String name, int i, String phoneNum, String email, String password, String address) {
+        
+    }
+
+
+    public Double getBalance() {
         return balance;
     }
 
