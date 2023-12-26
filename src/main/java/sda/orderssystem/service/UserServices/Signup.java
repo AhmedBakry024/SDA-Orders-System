@@ -29,8 +29,6 @@ public class Signup {
 
         }
 
-
-
         //check the validity of the email
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +"[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         if (!Pattern.compile(emailRegex).matcher(email).matches() || !validateEmail(email)) {
@@ -43,12 +41,10 @@ public class Signup {
             return false;
         }
 
-
         //check the validity of the number (the length and the prefix)
         if (!(phoneNum.startsWith("010") || phoneNum.startsWith("011") || phoneNum.startsWith("012")
                 || phoneNum.startsWith("015")) || !(phoneNum.length() == 11)) {
             return false;
-
         }
 
         User u1 = new User(name, usersData.usersDatabase.size() + 1000, phoneNum, email, password, address);
@@ -57,5 +53,4 @@ public class Signup {
         return true;  // return validated account
 
     }
-    
 }
