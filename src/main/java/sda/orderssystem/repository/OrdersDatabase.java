@@ -7,7 +7,6 @@ import sda.orderssystem.model.User;
 public class OrdersDatabase {
     public Vector<User> usersDatabase = new Vector<User>();
     
-    public int activeUser = -1;
     private static OrdersDatabase DatabaseInstance;
 
     private OrdersDatabase() {
