@@ -3,16 +3,26 @@ package sda.orderssystem.model;
 public class User {
 
 	private String name;
-	private int age;
     private int id;
     private String address;
     private String password;
     private String email;
     private String phone;
     private Double balance;
-    
 
-	public Double getBalance() {
+    public User(String name, int i, String phoneNum, String email, String password, String address) {
+        
+        this.name = name;
+        this.id = i;
+        this.phone = phoneNum;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.balance = 0.0;
+    }
+
+
+    public Double getBalance() {
         return balance;
     }
 
@@ -60,13 +70,6 @@ public class User {
 		this.name = name;
 	}
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
 
 	public int getId() {
 		return id;
