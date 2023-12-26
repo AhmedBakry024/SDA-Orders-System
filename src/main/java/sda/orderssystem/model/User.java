@@ -9,9 +9,18 @@ public class User {
     private String password;
     private String email;
     private String phone;
+    private Double balance;
     
 
-	public String getAddress() {
+	public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public String getAddress() {
         return address;
     }
 
