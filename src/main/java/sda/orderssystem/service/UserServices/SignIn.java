@@ -5,17 +5,11 @@ import sda.orderssystem.repository.UsersDatabase;
 import java.util.Scanner;
 
 public class SignIn {
-    public boolean login()
+    public boolean login(String Email , String Pass)
     {
         UsersDatabase userDB = UsersDatabase.getInstance();
         userDB.activeUser = -1;
 
-        System.out.println("Login Section");
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your Email: ");
-        String Email = scanner.nextLine();
-        System.out.print("Enter your Password: ");
-        String Pass = scanner.nextLine();
 
         for(int i=0 ; i<userDB.usersDatabase.size() ; i++)
         {
