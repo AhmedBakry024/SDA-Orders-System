@@ -8,7 +8,7 @@ abstract public class Order {
     private String date;
     private String status;
     private String address;
-    private User Customer;
+    private int CustomerID;
     private ArrayList<Product> products;
 
 
@@ -36,11 +36,11 @@ abstract public class Order {
     public void setAddress(String address) {
         this.address = address;
     }
-    public User getCustomer() {
-        return Customer;
+    public int getCustomer() {
+        return CustomerID;
     }
-    public void setCustomer(User customer) {
-        Customer = customer;
+    public void setCustomer(int customerID) {
+        CustomerID = customerID;
     }
     public ArrayList<Product> getProducts() {
         return products;
