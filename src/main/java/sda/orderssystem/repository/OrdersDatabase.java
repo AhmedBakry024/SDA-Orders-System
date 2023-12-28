@@ -5,7 +5,7 @@ import java.util.Vector;
 import sda.orderssystem.model.User;
 
 public class OrdersDatabase {
-    public Vector<User> usersDatabase = new Vector<User>();
+    public Vector<User> usersDatabase = new Vector<>();
     
     private static OrdersDatabase DatabaseInstance;
 

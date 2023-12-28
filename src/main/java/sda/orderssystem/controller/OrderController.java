@@ -25,20 +25,15 @@ public class OrderController {
     }
 
     @GetMapping("/get")
-    public Order retrieveOrder()
+    public Order retrieveAllOrders()
     {
         return null;
     }
 
     @GetMapping("/get/{id}")
-    public Order retrieveOrder(@PathVariable("id") int id)
+    public Order retrieveOrderById(@PathVariable("id") int id)
     {
         return null;
     }
-
-
-
-
-
 
 }

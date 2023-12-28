@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class CompoundOrder extends Order {
     private ArrayList<Order> orders;
 
+    public CompoundOrder(Order[] orders) {
+        
+    }
+
     @Override
     public void addOrder(Order order) {
         this.orders.add(order);

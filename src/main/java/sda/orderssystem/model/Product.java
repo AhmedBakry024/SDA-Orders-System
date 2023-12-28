@@ -1,18 +1,18 @@
 package sda.orderssystem.model;
 
 public class Product {
-    private String SerialNumber;
+    private int SerialNumber;
     private String ProductName;
     private String Vendor;
     private String Category;
     private Double Price;
     private int Quantity;
 
-    public String getSerialNumber() {
+    public int getSerialNumber() {
         return SerialNumber;
     }
 
-    public void setSerialNumber(String serialNumber) {
+    public void setSerialNumber(int serialNumber) {
         SerialNumber = serialNumber;
     }
 

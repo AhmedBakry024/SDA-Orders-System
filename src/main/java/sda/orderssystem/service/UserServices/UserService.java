@@ -1,6 +1,5 @@
 package sda.orderssystem.service.UserServices;
 
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
@@ -31,15 +30,15 @@ public class UserService implements IUserService {
     }
     
     @Override
-    public boolean validateEmail(String email) {
+    public boolean emailValidation(String email) {
         
 
         for (int i = 0; i < usersData.usersDatabase.size(); i++) {
             if (email.equals(usersData.usersDatabase.get(i).getEmail())) {
-                return false;  //return false if the email already exist
+                return true;  //return false if the email already exist
             }
         }
-        return true;  // return true if it's a unique email
+        return false;  // return true if it's a unique email
     }
 
 
@@ -54,7 +53,7 @@ public class UserService implements IUserService {
 
         //check the validity of the email
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        if (!Pattern.compile(emailRegex).matcher(email).matches() || !validateEmail(email)) {
+        if (!Pattern.compile(emailRegex).matcher(email).matches() || emailValidation(email)) {
             return false;
         }
 
@@ -95,7 +94,7 @@ public class UserService implements IUserService {
 
         //check the validity of the email
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        if (!Pattern.compile(emailRegex).matcher(user.getEmail()).matches() || !validateEmail(user.getEmail())) {
+        if (!Pattern.compile(emailRegex).matcher(user.getEmail()).matches() || emailValidation(user.getEmail())) {
             return false;
         }
 

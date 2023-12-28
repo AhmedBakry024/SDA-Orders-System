@@ -1,15 +1,29 @@
 package sda.orderssystem.model;
 
+import sda.orderssystem.repository.ProductsDatabase;
+
+import javax.sound.sampled.Port;
 import java.util.ArrayList;
 
 abstract public class Order {
     
-    private int id;
-    private String date;
-    private String status;
-    private String address;
-    private int CustomerID;
-    private ArrayList<Product> products;
+    protected int id;
+    protected String date;
+    protected String status;
+    protected String address;
+    protected int CustomerID;
+
+    protected ArrayList<Product> products;
+
+    public ArrayList<Integer> getProductsID() {
+        return productsID;
+    }
+
+    public void setProductsID(ArrayList<Integer> productsID) {
+        this.productsID = productsID;
+    }
+
+    protected ArrayList<Integer> productsID;
 
 
     public int getId() {
@@ -46,6 +60,10 @@ abstract public class Order {
         return products;
     }
 
+    public void setProducts(ArrayList<Product> products){
+        this.products = products;
+    }
+
     public void addProduct(Product product) {
         this.products.add(product);
     }
@@ -55,6 +73,19 @@ abstract public class Order {
     abstract public void removeOrder(Order order);
 
     abstract public Order getChild(int i);
+
+    public ArrayList<Product> getProductByID(Order order){
+        ProductsDatabase db = ProductsDatabase.getInstance();
+        ArrayList<Product> products = new ArrayList<Product>();
+        for(int i: order.getProductsID()){
+            for(Product p : db.productsDatabase) {
+                if (i == p.getSerialNumber()){
+                    products.add(p);
+                }
+            }
+        }
+        return products;
+    }
 
     
 
