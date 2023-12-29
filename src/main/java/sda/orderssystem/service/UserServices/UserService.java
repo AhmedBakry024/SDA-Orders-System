@@ -90,7 +90,7 @@ public class UserService implements IUserService {
 
     }
 
-    public User[] getAllPersons() {
+    public User[] getAllUsers() {
         try {
             User[] p = new User[usersData.usersDatabase.size()];
             int i = 0;
@@ -105,7 +105,7 @@ public class UserService implements IUserService {
         return null;
     }
 
-    public User getPerson(int id) {
+    public User getUserById(int id) {
         try {
             return usersData.usersDatabase.get(id);
         } catch (Exception e) {

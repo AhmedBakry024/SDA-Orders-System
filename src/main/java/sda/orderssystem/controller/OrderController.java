@@ -1,10 +1,7 @@
 package sda.orderssystem.controller;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sda.orderssystem.model.Order;
 import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.service.OrderServices.OrderService;
 import java.util.ArrayList;

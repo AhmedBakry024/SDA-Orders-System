@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -33,12 +32,12 @@ public class UserController {
 
     @GetMapping("/get")
     public User[] getAll() {
-        return userService.getAllPersons();
+        return userService.getAllUsers();
     }
     
     @GetMapping("/get/{id}")
-    public User getPerson(@PathVariable("id") int id) {
-        return userService.getPerson(id);
+    public User getUserById(@PathVariable("id") int id) {
+        return userService.getUserById(id);
     }
     
     @GetMapping("/get/check/{email}/{password}")
