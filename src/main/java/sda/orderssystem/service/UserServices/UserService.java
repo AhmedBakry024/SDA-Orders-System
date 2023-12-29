@@ -42,39 +42,6 @@ public class UserService implements IUserService {
     }
 
 
-    @Override
-    public boolean createAccount(String name, String email, String password, String phoneNum, String address) {
-
-        //check regular expressions to ensure that the name doesn't contain numbers
-        if (name.matches(".*\\d.*")) {
-            return false;
-
-        }
-
-        //check the validity of the email
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        if (!Pattern.compile(emailRegex).matcher(email).matches() || emailValidation(email)) {
-            return false;
-        }
-
-        //check the validity of the password (strong, has at least 8 chars , 1 digit, 1 lowercase, 1 uppercase, 1 special char and no whitespace)
-        String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
-        if (!Pattern.compile(passwordRegex).matcher(password).matches()) {
-            return false;
-        }
-
-        //check the validity of the number (the length and the prefix)
-        if (!(phoneNum.startsWith("010") || phoneNum.startsWith("011") || phoneNum.startsWith("012")
-                || phoneNum.startsWith("015")) || !(phoneNum.length() == 11)) {
-            return false;
-        }
-
-        User u1 = new User(name, usersData.usersDatabase.size() + 1000, phoneNum, email, password, address);
-        usersData.usersDatabase.add(u1);
-
-        return true; // return validated account
-
-    }
     
     @Override
     public boolean AddBalance(Double balance)
@@ -82,6 +49,12 @@ public class UserService implements IUserService {
         User currentUser = usersData.usersDatabase.get(usersData.activeUser);
         currentUser.setBalance(currentUser.getBalance() + balance);
         return true;
+    }
+
+    public Double getBalance(int id)
+    {
+        User currentUser = usersData.usersDatabase.get(id);
+        return currentUser.getBalance();
     }
     
     public boolean createAccount(User user) {
@@ -110,7 +83,7 @@ public class UserService implements IUserService {
             return false;
         }
 
-        User u1 = new User(user.getName(), usersData.usersDatabase.size() + 1000, user.getPhone(), user.getEmail(), user.getPassword(), user.getAddress());
+        User u1 = new User(user.getName(), usersData.usersDatabase.size(), user.getPhone(), user.getEmail(), user.getPassword(), user.getAddress());
         usersData.usersDatabase.add(u1);
 
         return true; // return validated account

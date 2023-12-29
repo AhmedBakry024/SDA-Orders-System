@@ -54,7 +54,7 @@ public class OrderService {
                     json.put("id", child.getId());
                     json.put("status", child.getStatus());
                     json.put("customerID", child.getCustomer());
-                    json.put("products", child.getProducts().toString());
+                    json.put("products", child.getProducts().toArray());
                     orders.put(json);
                 }
             } else {

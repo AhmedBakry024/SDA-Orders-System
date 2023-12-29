@@ -35,9 +35,7 @@ public class OrderController {
     @GetMapping("/get")
     public List<Object> retrieveAllOrders()
     {
-
-        List<Object> orders = orderService.retrieveAllOrders().toList();
-        return orders;
+        return orderService.retrieveAllOrders().toList();
     }
 
     @GetMapping("/get/{id}")

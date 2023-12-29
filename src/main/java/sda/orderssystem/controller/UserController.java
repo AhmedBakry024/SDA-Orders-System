@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -45,10 +47,16 @@ public class UserController {
         return userService.login(email, password);
     }
 
-    @PutMapping("balance/{balance}")
-    public boolean AddBalance( @PathVariable Double balance) {
-        
+    @PutMapping("/balance/id/{balance}")
+    public boolean AddBalance(@PathVariable Double balance) {
+
         return userService.AddBalance(balance);
     }
+    
+    @GetMapping("/balance/{id}")
+    public Double getMethodName(@PathVariable("id") int id) {
+        return userService.getBalance(id);
+    }
+    
 
 }

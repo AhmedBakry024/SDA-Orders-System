@@ -6,8 +6,6 @@ public interface IUserService {
 
     boolean emailValidation(String email);
 
-    boolean createAccount(String name, String email, String password, String phoneNum, String address);
-
     boolean AddBalance(Double balance);
 
 }
