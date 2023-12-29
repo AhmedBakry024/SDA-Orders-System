@@ -22,6 +22,7 @@ public class OrderService {
         System.out.println("HI");
         if (orders.size() == 1) {
             Order order = new SimpleOrder(orders.get(0));
+            System.out.println(orders.get(0).getCustomer()); 
             if (usersDatabase.usersDatabase.get(order.getCustomer()).getBalance() >= order.getTotalPrice() + 40) {
                 usersDatabase.usersDatabase.get(order.getCustomer()).setBalance(
                         usersDatabase.usersDatabase.get(order.getCustomer()).getBalance() - (order.getTotalPrice() + 40));
