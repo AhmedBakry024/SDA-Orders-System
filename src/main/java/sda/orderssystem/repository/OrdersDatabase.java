@@ -1,11 +1,11 @@
 package sda.orderssystem.repository;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
-import sda.orderssystem.model.User;
+import sda.orderssystem.model.Order;
 
 public class OrdersDatabase {
-    public Vector<User> usersDatabase = new Vector<>();
+    public ArrayList<Order> ordersDatabase = new ArrayList<>();
     
     private static OrdersDatabase DatabaseInstance;
 

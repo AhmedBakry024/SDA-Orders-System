@@ -1,9 +1,16 @@
 package sda.orderssystem.controller;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sda.orderssystem.model.Order;
+import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.service.OrderServices.OrderService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/order")
@@ -12,28 +19,31 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @PostMapping("/addOrder")
-    public boolean addOrder()
+    @PostMapping("/add")
+    public boolean addOrder(@RequestBody ArrayList<SimpleOrder> orders)
     {
-        return true;
+        return orderService.addOrder(orders);
+    
     }
 
-    @DeleteMapping("/deleteOrder")
+    @DeleteMapping("/delete")
     public boolean cancelOrder()
     {
         return true;
     }
 
     @GetMapping("/get")
-    public Order retrieveAllOrders()
+    public List<Object> retrieveAllOrders()
     {
-        return null;
+
+        List<Object> orders = orderService.retrieveAllOrders().toList();
+        return orders;
     }
 
     @GetMapping("/get/{id}")
-    public Order retrieveOrderById(@PathVariable("id") int id)
+    public Map<String,Object> retrieveOrderById(@PathVariable("id") int id)
     {
-        return null;
+        return orderService.retrieveOrderById(id).toMap();
     }
 
 }

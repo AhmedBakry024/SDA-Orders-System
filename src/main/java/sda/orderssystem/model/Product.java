@@ -8,6 +8,15 @@ public class Product {
     private Double Price;
     private int Quantity;
 
+    public Product(int serialNumber, String productName, String vendor, String category, Double price, int quantity) {
+        SerialNumber = serialNumber;
+        ProductName = productName;
+        Vendor = vendor;
+        Category = category;
+        Price = price;
+        Quantity = quantity;
+    }
+
     public int getSerialNumber() {
         return SerialNumber;
     }

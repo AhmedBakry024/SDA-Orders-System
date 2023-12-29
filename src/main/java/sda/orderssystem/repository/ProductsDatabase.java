@@ -1,13 +1,12 @@
 package sda.orderssystem.repository;
 
 import sda.orderssystem.model.Product;
-import sda.orderssystem.model.User;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class ProductsDatabase {
 
-    public Vector<Product> productsDatabase = new Vector<>();
+    public ArrayList<Product> productsDatabase = new ArrayList<>();
 
     private static ProductsDatabase DatabaseInstance;
 

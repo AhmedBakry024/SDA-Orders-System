@@ -1,13 +1,13 @@
 package sda.orderssystem.repository;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import sda.orderssystem.model.User;
 
 
 public class UsersDatabase {
 
-    public Vector<User> usersDatabase = new Vector<>();
+    public ArrayList<User> usersDatabase = new ArrayList<>();
     
     public int activeUser = -1;
     private static UsersDatabase DatabaseInstance;

@@ -2,7 +2,6 @@ package sda.orderssystem.model;
 
 import sda.orderssystem.repository.ProductsDatabase;
 
-import javax.sound.sampled.Port;
 import java.util.ArrayList;
 
 abstract public class Order {
@@ -12,8 +11,10 @@ abstract public class Order {
     protected String status;
     protected String address;
     protected int CustomerID;
+    protected Double totalPrice;
 
     protected ArrayList<Product> products;
+    protected ArrayList<Integer> productsID;
 
     public ArrayList<Integer> getProductsID() {
         return productsID;
@@ -22,8 +23,6 @@ abstract public class Order {
     public void setProductsID(ArrayList<Integer> productsID) {
         this.productsID = productsID;
     }
-
-    protected ArrayList<Integer> productsID;
 
 
     public int getId() {
@@ -67,19 +66,13 @@ abstract public class Order {
     public void addProduct(Product product) {
         this.products.add(product);
     }
-    
-    abstract public void addOrder(Order order);
 
-    abstract public void removeOrder(Order order);
-
-    abstract public Order getChild(int i);
-
-    public ArrayList<Product> getProductByID(Order order){
+    public ArrayList<Product> getProductByID(Order order) {
         ProductsDatabase db = ProductsDatabase.getInstance();
         ArrayList<Product> products = new ArrayList<Product>();
-        for(int i: order.getProductsID()){
-            for(Product p : db.productsDatabase) {
-                if (i == p.getSerialNumber()){
+        for (int i : order.getProductsID()) {
+            for (Product p : db.productsDatabase) {
+                if (i == p.getSerialNumber()) {
                     products.add(p);
                 }
             }
@@ -87,6 +80,33 @@ abstract public class Order {
         return products;
     }
 
-    
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
 
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Double calculateTotal(ArrayList<Product> products) {
+        Double total = 0.0;
+        for (Product p : products) {
+            total += p.getPrice();
+        }
+        return total;
+    }
+
+    public Order() {
+        products = new ArrayList<>();
+        productsID = new ArrayList<Integer>();
+    }
+    
+    abstract public void addOrder(SimpleOrder order);
+
+    abstract public void removeOrder(SimpleOrder order);
+
+    abstract public Order getChild(int i);
+
+    abstract public ArrayList<SimpleOrder> getChildren();
+    
 }
