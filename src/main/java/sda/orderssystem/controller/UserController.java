@@ -46,14 +46,14 @@ public class UserController {
         return userService.login(email, password);
     }
 
-    @PutMapping("/balance/id/{balance}")
-    public boolean AddBalance(@PathVariable Double balance) {
+    @PutMapping("/balance/{id}/{balance}")
+    public boolean AddBalance(@PathVariable ("balance") int balance, @PathVariable("id") int id) {
 
-        return userService.AddBalance(balance);
+        return userService.AddBalance(id ,balance);
     }
     
     @GetMapping("/balance/{id}")
-    public Double getMethodName(@PathVariable("id") int id) {
+    public int getBalance(@PathVariable("id") int id) {
         return userService.getBalance(id);
     }
     

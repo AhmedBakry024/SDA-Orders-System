@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class CompoundOrder extends Order {
     private ArrayList<SimpleOrder> orders;
 
-    public CompoundOrder(ArrayList<SimpleOrder> orders) {
-
-        for (Order order : orders) {
+    public CompoundOrder(ArrayList<SimpleOrder> Oh) {
+        this.orders = new ArrayList<>();
+        for (Order order : Oh) {
             this.orders.add(new SimpleOrder(order));
         }
-        this.id = orders.get(0).getId();
+        this.id = Oh.get(0).getId();
     }
     
     public CompoundOrder() {

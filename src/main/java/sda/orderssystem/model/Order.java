@@ -11,7 +11,7 @@ abstract public class Order {
     protected String status;
     protected String address;
     protected int CustomerID;
-    protected Double totalPrice;
+    protected int totalPrice;
 
     protected ArrayList<Product> products;
     protected ArrayList<Integer> productsID;
@@ -80,16 +80,16 @@ abstract public class Order {
         return products;
     }
 
-    public Double getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public Double calculateTotal(ArrayList<Product> products) {
-        Double total = 0.0;
+    public int calculateTotal(ArrayList<Product> products) {
+        int total = 0;
         for (Product p : products) {
             total += p.getPrice();
         }

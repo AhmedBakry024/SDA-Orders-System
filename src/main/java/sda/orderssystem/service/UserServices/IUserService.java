@@ -6,6 +6,6 @@ public interface IUserService {
 
     boolean emailValidation(String email);
 
-    boolean AddBalance(Double balance);
+    boolean AddBalance(int id,int balance);
 
 }

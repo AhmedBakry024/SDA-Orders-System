@@ -8,7 +8,7 @@ public class User {
     private String password;
     private String email;
     private String phone;
-    private Double balance;
+    private int balance;
 
     public User(String name, int i, String phoneNum, String email, String password, String address) {
         
@@ -18,15 +18,15 @@ public class User {
         this.email = email;
         this.password = password;
         this.address = address;
-        this.balance = 0.0;
+        this.balance = 0;
     }
 
 
-    public Double getBalance() {
+    public int getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
     }
 

@@ -44,14 +44,14 @@ public class UserService implements IUserService {
 
     
     @Override
-    public boolean AddBalance(Double balance)
+    public boolean AddBalance(int id,int balance)
     {
-        User currentUser = usersData.usersDatabase.get(usersData.activeUser);
+        User currentUser = usersData.usersDatabase.get(id);
         currentUser.setBalance(currentUser.getBalance() + balance);
         return true;
     }
 
-    public Double getBalance(int id)
+    public int getBalance(int id)
     {
         User currentUser = usersData.usersDatabase.get(id);
         return currentUser.getBalance();
@@ -83,7 +83,7 @@ public class UserService implements IUserService {
             return false;
         }
 
-        User u1 = new User(user.getName(), usersData.usersDatabase.size(), user.getPhone(), user.getEmail(), user.getPassword(), user.getAddress());
+        User u1 = new User(user.getName(), usersData.usersDatabase.size() + 1, user.getPhone(), user.getEmail(), user.getPassword(), user.getAddress());
         usersData.usersDatabase.add(u1);
 
         return true; // return validated account

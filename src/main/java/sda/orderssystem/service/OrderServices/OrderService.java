@@ -8,23 +8,36 @@ import sda.orderssystem.model.CompoundOrder;
 import sda.orderssystem.model.Order;
 import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.repository.OrdersDatabase;
+import sda.orderssystem.repository.UsersDatabase;
+
 import java.util.ArrayList;
 
 @Service
 public class OrderService {
 
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
+    public UsersDatabase usersDatabase = UsersDatabase.getInstance();
 
     public boolean addOrder(ArrayList<SimpleOrder> orders) {
         System.out.println("HI");
         if (orders.size() == 1) {
             Order order = new SimpleOrder(orders.get(0));
-            System.out.println(order.toString());
-            ordersDatabase.ordersDatabase.add(order);
+            if (usersDatabase.usersDatabase.get(order.getCustomer()).getBalance() >= order.getTotalPrice() + 40) {
+                usersDatabase.usersDatabase.get(order.getCustomer()).setBalance(
+                        usersDatabase.usersDatabase.get(order.getCustomer()).getBalance() - (order.getTotalPrice() + 40));
+                ordersDatabase.ordersDatabase.add(order);
+            }
+            else return false;
         } else if (orders.size() > 1) {
             Order order = new CompoundOrder(orders);
             for (Order child : order.getChildren()) {
-                ordersDatabase.ordersDatabase.add(child);
+                if (usersDatabase.usersDatabase.get(child.getCustomer()).getBalance() >= child.getTotalPrice() + 40) {
+                    usersDatabase.usersDatabase.get(child.getCustomer())
+                            .setBalance(usersDatabase.usersDatabase.get(child.getCustomer()).getBalance()
+                                    - child.getTotalPrice() + (40 / orders.size()));
+                    ordersDatabase.ordersDatabase.add(child);
+                }
+                else return false;
             }
         }
 
