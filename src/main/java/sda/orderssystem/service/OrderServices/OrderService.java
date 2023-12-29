@@ -1,6 +1,5 @@
 package sda.orderssystem.service.OrderServices;
 
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import sda.orderssystem.model.Order;
 import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.repository.OrdersDatabase;
 import sda.orderssystem.repository.UsersDatabase;
-
 import java.util.ArrayList;
 
 @Service
@@ -19,10 +17,8 @@ public class OrderService {
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
 
     public boolean addOrder(ArrayList<SimpleOrder> orders) {
-        System.out.println("HI");
         if (orders.size() == 1) {
             Order order = new SimpleOrder(orders.get(0));
-            System.out.println(orders.get(0).getCustomerID()); 
             if (usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() >= order.getTotalPrice() + 40) {
                 usersDatabase.usersDatabase.get(order.getCustomerID()).setBalance(
                         usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() - (order.getTotalPrice() + 40));

@@ -19,9 +19,6 @@ public class OrderController {
     @PostMapping("/add")
     public boolean addOrder(@RequestBody ArrayList<SimpleOrder> orders)
     {
-        System.out.println(orders.get(0).getCustomerID());
-        System.out.println(orders.get(0).getAddress());
-        System.out.println(orders.get(0).getTotalPrice()); 
         return orderService.addOrder(orders);
     
     }
