@@ -22,19 +22,19 @@ public class OrderService {
         System.out.println("HI");
         if (orders.size() == 1) {
             Order order = new SimpleOrder(orders.get(0));
-            System.out.println(orders.get(0).getCustomer()); 
-            if (usersDatabase.usersDatabase.get(order.getCustomer()).getBalance() >= order.getTotalPrice() + 40) {
-                usersDatabase.usersDatabase.get(order.getCustomer()).setBalance(
-                        usersDatabase.usersDatabase.get(order.getCustomer()).getBalance() - (order.getTotalPrice() + 40));
+            System.out.println(orders.get(0).getCustomerID()); 
+            if (usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() >= order.getTotalPrice() + 40) {
+                usersDatabase.usersDatabase.get(order.getCustomerID()).setBalance(
+                        usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() - (order.getTotalPrice() + 40));
                 ordersDatabase.ordersDatabase.add(order);
             }
             else return false;
         } else if (orders.size() > 1) {
             Order order = new CompoundOrder(orders);
             for (Order child : order.getChildren()) {
-                if (usersDatabase.usersDatabase.get(child.getCustomer()).getBalance() >= child.getTotalPrice() + 40) {
-                    usersDatabase.usersDatabase.get(child.getCustomer())
-                            .setBalance(usersDatabase.usersDatabase.get(child.getCustomer()).getBalance()
+                if (usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance() >= child.getTotalPrice() + 40) {
+                    usersDatabase.usersDatabase.get(child.getCustomerID())
+                            .setBalance(usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance()
                                     - child.getTotalPrice() + (40 / orders.size()));
                     ordersDatabase.ordersDatabase.add(child);
                 }
@@ -51,7 +51,7 @@ public class OrderService {
                 JSONObject json = new JSONObject();
                 json.put("id", order.getId());
                 json.put("status", order.getStatus());
-                json.put("customerID", order.getCustomer());
+                json.put("customerID", order.getCustomerID());
                 json.put("products", order.getProducts().toArray());
                 return json;
             }
@@ -67,7 +67,7 @@ public class OrderService {
                     JSONObject json = new JSONObject();
                     json.put("id", child.getId());
                     json.put("status", child.getStatus());
-                    json.put("customerID", child.getCustomer());
+                    json.put("customerID", child.getCustomerID());
                     json.put("products", child.getProducts().toArray());
                     orders.put(json);
                 }
@@ -76,7 +76,7 @@ public class OrderService {
                 JSONObject json = new JSONObject();
                 json.put("id", order.getId());
                 json.put("status", order.getStatus());
-                json.put("customerID", order.getCustomer());
+                json.put("customerID", order.getCustomerID());
                 // json.put("products", order.getProducts().toArray());
                 orders.put(json);
             }

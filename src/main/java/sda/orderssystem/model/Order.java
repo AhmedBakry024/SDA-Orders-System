@@ -10,7 +10,7 @@ abstract public class Order {
     protected String date;
     protected String status;
     protected String address;
-    protected int CustomerID;
+    protected int customerID;
     protected int totalPrice;
 
     protected ArrayList<Product> products;
@@ -49,11 +49,11 @@ abstract public class Order {
     public void setAddress(String address) {
         this.address = address;
     }
-    public int getCustomer() {
-        return CustomerID;
+    public int getCustomerID() {
+        return customerID;
     }
-    public void setCustomer(int customerID) {
-        CustomerID = customerID;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
     public ArrayList<Product> getProducts() {
         return products;
