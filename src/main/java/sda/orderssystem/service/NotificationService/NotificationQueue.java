@@ -5,26 +5,25 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class NotificationQueue {
 
-    private BlockingQueue <Notification> notificationBlockingQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<Message> notificationBlockingQueue = new LinkedBlockingQueue<>();
 
-    public void addNotification(Notification notification) {
+    public void addNotification(Message message) {
         try {
-            notificationBlockingQueue.put(notification);
+            notificationBlockingQueue.put(message);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 
-    public String receiveMessage() {
+    public void receiveMessage() {
         try {
-            return notificationBlockingQueue.take().toString();
+            notificationBlockingQueue.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return null;
         }
     }
 
-    public Notification removeNotification() {
+    public Message removeNotification() {
         try {
             return notificationBlockingQueue.take();
         } catch (InterruptedException e) {

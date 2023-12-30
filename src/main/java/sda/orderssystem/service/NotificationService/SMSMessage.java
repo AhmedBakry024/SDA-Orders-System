@@ -1,6 +1,6 @@
 package sda.orderssystem.service.NotificationService;
 
-public class SMSMessage implements IMessage{
+public class SMSMessage extends Message {
     int smsCount = 0;
 
     @Override
