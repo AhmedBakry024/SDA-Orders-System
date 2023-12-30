@@ -1,15 +1,16 @@
 package sda.orderssystem.model;
 
-import sda.orderssystem.repository.OrdersDatabase;
-import sda.orderssystem.repository.UsersDatabase;
+import sda.orderssystem.repository.*;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SimpleOrder extends Order {
 
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
 
-    public SimpleOrder(Order order) {
+    public SimpleOrder(Order order) throws ParseException {
         super();
         this.address = order.getAddress();
         this.products = order.getProductByID(order);
@@ -17,7 +18,7 @@ public class SimpleOrder extends Order {
         this.setCustomerID(order.getCustomerID());
         this.status = "Placed";
         this.id = ordersDatabase.ordersDatabase.size();
-        this.date = java.time.LocalDate.now().toString();
+        this.date = Calendar.getInstance().getTime();
     }
 
     public SimpleOrder() {
@@ -26,28 +27,21 @@ public class SimpleOrder extends Order {
 
     @Override
     public Order getChild(int i) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getChild'");
     }
 
     @Override
     public void addOrder(SimpleOrder order) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
     }
 
     @Override
     public void removeOrder(SimpleOrder order) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removeOrder'");
     }
 
     @Override
     public ArrayList<SimpleOrder> getChildren() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getChildren'");
-
     }
-    
-
 }

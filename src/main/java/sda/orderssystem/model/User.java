@@ -11,7 +11,6 @@ public class User {
     private int balance;
 
     public User(String name, int i, String phoneNum, String email, String password, String address) {
-        
         this.name = name;
         this.id = i;
         this.phone = phoneNum;
@@ -20,7 +19,6 @@ public class User {
         this.address = address;
         this.balance = 0;
     }
-
 
     public int getBalance() {
         return balance;
@@ -69,7 +67,6 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public int getId() {
 		return id;

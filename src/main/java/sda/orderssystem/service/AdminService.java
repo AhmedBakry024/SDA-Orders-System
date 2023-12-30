@@ -31,5 +31,19 @@ public class AdminService {
 
     public ArrayList<Product> retrieveAllProducts() {
         return productsDatabase.productsDatabase;
-    }   
+    }
+
+    public boolean addProduct(Product product) {
+        return productsDatabase.productsDatabase.add(product);
+    }
+
+    public boolean shipOrder(int orderID) {
+
+        if (ordersDatabase.ordersDatabase.get(orderID).getStatus().equals("Placed")) {
+            ordersDatabase.ordersDatabase.get(orderID).setStatus("Shipped");
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

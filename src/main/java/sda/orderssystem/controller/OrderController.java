@@ -1,13 +1,12 @@
 package sda.orderssystem.controller;
 
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.service.OrderServices.OrderService;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -18,7 +17,7 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/add")
-    public boolean addOrder(@RequestBody ArrayList<SimpleOrder> orders)
+    public boolean addOrder(@RequestBody ArrayList<SimpleOrder> orders) throws ParseException
     {
         return orderService.addOrder(orders);
     
@@ -41,5 +40,4 @@ public class OrderController {
     {
         return orderService.retrieveOrderById(id).toList();
     }
-
 }

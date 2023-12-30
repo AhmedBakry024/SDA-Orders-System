@@ -1,7 +1,7 @@
 package sda.orderssystem.model;
 
+import java.text.ParseException;
 import java.util.ArrayList;
-
 import sda.orderssystem.repository.OrdersDatabase;
 
 public class CompoundOrder extends Order {
@@ -9,7 +9,7 @@ public class CompoundOrder extends Order {
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
 
 
-    public CompoundOrder(ArrayList<SimpleOrder> o) {
+    public CompoundOrder(ArrayList<SimpleOrder> o) throws ParseException {
         this.orders = new ArrayList<>();
         for (Order order : o) {
             this.orders.add(new SimpleOrder(order));

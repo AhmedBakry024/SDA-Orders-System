@@ -8,7 +8,6 @@ import sda.orderssystem.model.User;
 public class UsersDatabase {
 
     public ArrayList<User> usersDatabase = new ArrayList<>();
-    
     public int activeUser = -1;
     private static UsersDatabase DatabaseInstance;
 

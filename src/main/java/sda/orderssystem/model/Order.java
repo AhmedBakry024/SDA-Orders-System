@@ -1,13 +1,13 @@
 package sda.orderssystem.model;
 
 import sda.orderssystem.repository.ProductsDatabase;
-
 import java.util.ArrayList;
+import java.util.Date;
 
 abstract public class Order {
     
     protected int id;
-    protected String date;
+    protected Date date;
     protected String status;
     protected String address;
     protected int customerID;
@@ -31,10 +31,10 @@ abstract public class Order {
     public void setId(int id) {
         this.id = id;
     }
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
     public String getStatus() {
