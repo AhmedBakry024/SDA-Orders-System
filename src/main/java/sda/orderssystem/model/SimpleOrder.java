@@ -14,10 +14,9 @@ public class SimpleOrder extends Order {
         this.address = order.getAddress();
         this.products = order.getProductByID(order);
         this.totalPrice = order.calculateTotal(this.products);
-        // this.CustomerID = order.getCustomer();
         this.setCustomerID(order.getCustomerID());
         this.status = "Placed";
-        this.id = ordersDatabase.ordersDatabase.size() + 1;
+        this.id = ordersDatabase.ordersDatabase.size();
         this.date = java.time.LocalDate.now().toString();
     }
 

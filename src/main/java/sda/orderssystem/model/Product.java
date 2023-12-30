@@ -5,10 +5,10 @@ public class Product {
     private String ProductName;
     private String Vendor;
     private String Category;
-    private Double Price;
+    private int Price;
     private int Quantity;
 
-    public Product(int serialNumber, String productName, String vendor, String category, Double price, int quantity) {
+    public Product(int serialNumber, String productName, String vendor, String category, int price, int quantity) {
         SerialNumber = serialNumber;
         ProductName = productName;
         Vendor = vendor;
@@ -49,11 +49,11 @@ public class Product {
         Category = category;
     }
 
-    public Double getPrice() {
+    public int getPrice() {
         return Price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         Price = price;
     }
 

@@ -1,13 +1,9 @@
 package sda.orderssystem.service.OrderServices;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
 import org.springframework.stereotype.Service;
-import sda.orderssystem.model.CompoundOrder;
-import sda.orderssystem.model.Order;
-import sda.orderssystem.model.SimpleOrder;
-import sda.orderssystem.repository.OrdersDatabase;
-import sda.orderssystem.repository.UsersDatabase;
+import sda.orderssystem.model.*;
+import sda.orderssystem.repository.*;
 import java.util.ArrayList;
 
 @Service
@@ -15,41 +11,67 @@ public class OrderService {
 
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
+    public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
 
     public boolean addOrder(ArrayList<SimpleOrder> orders) {
+        // Check if the database has the products that the order contains, else return false.
+        if (!CheckProducts(orders))
+            return false;
+            // Check if the user has enough balance to pay for the order, else return false.. This is only for the simple order.
         if (orders.size() == 1) {
             Order order = new SimpleOrder(orders.get(0));
             if (usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() >= order.getTotalPrice() + 40) {
                 usersDatabase.usersDatabase.get(order.getCustomerID()).setBalance(
                         usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() - (order.getTotalPrice() + 40));
+                updateQuantity(orders);
                 ordersDatabase.ordersDatabase.add(order);
-            }
-            else return false;
+            } else
+                return false;
+
+                // Check if the user has enough balance to pay for the order, else return false. This is only for the compound order.
         } else if (orders.size() > 1) {
             Order order = new CompoundOrder(orders);
             for (Order child : order.getChildren()) {
-                if (usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance() >= child.getTotalPrice() + 40) {
-                    usersDatabase.usersDatabase.get(child.getCustomerID())
-                            .setBalance(usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance()
-                                    - child.getTotalPrice() + (40 / orders.size()));
-                    ordersDatabase.ordersDatabase.add(child);
+                if (!(usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance() >= child.getTotalPrice()
+                        + (40 / orders.size()))) {
+                    return false;
                 }
-                else return false;
             }
+            for (Order child : order.getChildren()) {
+                usersDatabase.usersDatabase.get(child.getCustomerID())
+                        .setBalance(usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance()
+                                - child.getTotalPrice() + (40 / orders.size()));
+            }
+            updateQuantity(orders);
+            ordersDatabase.ordersDatabase.add(order);
         }
 
         return true;
     }
 
-    public JSONObject retrieveOrderById(int id) {
+    public JSONArray retrieveOrderById(int id) {
+        JSONArray array = new JSONArray();
         for (Order order : ordersDatabase.ordersDatabase) {
             if (order.getId() == id) {
-                JSONObject json = new JSONObject();
-                json.put("id", order.getId());
-                json.put("status", order.getStatus());
-                json.put("customerID", order.getCustomerID());
-                json.put("products", order.getProducts().toArray());
-                return json;
+                if (order instanceof CompoundOrder) {
+                    for (Order child : ((CompoundOrder) order).getChildren()) {
+                        JSONObject json = new JSONObject();
+                        json.put("status", child.getStatus());
+                        json.put("id", child.getId());
+                        json.put("products", child.getProducts().toArray());
+                        json.put("customerID", child.getCustomerID());
+                        array.put(json);
+                    }
+                }
+                else {
+                    JSONObject json = new JSONObject();
+                    json.put("id", order.getId());
+                    json.put("status", order.getStatus());
+                    json.put("customerID", order.getCustomerID());
+                    json.put("products", order.getProducts().toArray());
+                    array.put(json);
+                }
+                return array;
             }
         }
         return null;
@@ -68,22 +90,50 @@ public class OrderService {
                     orders.put(json);
                 }
             } else {
-                System.out.println(order.getId());
                 JSONObject json = new JSONObject();
                 json.put("id", order.getId());
                 json.put("status", order.getStatus());
                 json.put("customerID", order.getCustomerID());
-                // json.put("products", order.getProducts().toArray());
+                json.put("products", order.getProducts().toArray());
                 orders.put(json);
             }
         }
-        for (Object orderObject : orders) {
-            JSONObject order = (JSONObject) orderObject;
-            System.out.println(order.toString());
-        }
+        // for (Object orderObject : orders) {
+        //     JSONObject order = (JSONObject) orderObject;
+            
+        // }
         return orders;
 
     }
+
+    public boolean CheckProducts(ArrayList<SimpleOrder> orders) {
+        for (SimpleOrder order : orders) {
+            for (Product product : order.getProducts()) {
+                for (Product product2 : productsDatabase.productsDatabase) {
+                    if (product.getSerialNumber() == product2.getSerialNumber()) {
+                        if (product2.getQuantity() == 0) {
+                            return false;
+                        } else
+                            break;
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void updateQuantity(ArrayList<SimpleOrder> orders) {
+        for (SimpleOrder order : orders) {
+            for (Product product : order.getProducts()) {
+                for (Product product2 : productsDatabase.productsDatabase) {
+                    if (product.getSerialNumber() == product2.getSerialNumber()) {
+                        product2.setQuantity(product2.getQuantity() - 1);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
 }
-
-

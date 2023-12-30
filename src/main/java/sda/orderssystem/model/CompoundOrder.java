@@ -2,15 +2,19 @@ package sda.orderssystem.model;
 
 import java.util.ArrayList;
 
+import sda.orderssystem.repository.OrdersDatabase;
+
 public class CompoundOrder extends Order {
     private ArrayList<SimpleOrder> orders;
+    public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
 
-    public CompoundOrder(ArrayList<SimpleOrder> Oh) {
+
+    public CompoundOrder(ArrayList<SimpleOrder> o) {
         this.orders = new ArrayList<>();
-        for (Order order : Oh) {
+        for (Order order : o) {
             this.orders.add(new SimpleOrder(order));
         }
-        this.id = Oh.get(0).getId();
+        this.id = ordersDatabase.ordersDatabase.size();
     }
     
     public CompoundOrder() {

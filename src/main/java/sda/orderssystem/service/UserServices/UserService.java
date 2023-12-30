@@ -13,8 +13,7 @@ public class UserService implements IUserService {
     UsersDatabase usersData = UsersDatabase.getInstance();
 
     @Override
-    public boolean login(String Email , String Pass)
-    {
+    public boolean login(String Email, String Pass) {
         usersData.activeUser = -1;
 
         for (int i = 0; i < usersData.usersDatabase.size(); i++) {
@@ -28,62 +27,60 @@ public class UserService implements IUserService {
         System.out.println("Invalid Email or Password");
         return false;
     }
-    
+
     @Override
     public boolean emailValidation(String email) {
-        
 
         for (int i = 0; i < usersData.usersDatabase.size(); i++) {
             if (email.equals(usersData.usersDatabase.get(i).getEmail())) {
-                return true;  //return false if the email already exist
+                return true;
             }
         }
-        return false;  // return true if it's a unique email
+        return false;
     }
 
-
-    
     @Override
-    public boolean AddBalance(int id,int balance)
-    {
+    public boolean AddBalance(int id, int balance) {
         User currentUser = usersData.usersDatabase.get(id);
         currentUser.setBalance(currentUser.getBalance() + balance);
         return true;
     }
 
-    public int getBalance(int id)
-    {
+    public int getBalance(int id) {
         User currentUser = usersData.usersDatabase.get(id);
         return currentUser.getBalance();
     }
-    
+
     public boolean createAccount(User user) {
 
-        //check regular expressions to ensure that the name doesn't contain numbers
+        // check regular expressions to ensure that the name doesn't contain numbers
         if (user.getName().matches(".*\\d.*")) {
             return false;
 
         }
 
-        //check the validity of the email
+        // check the validity of the email
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         if (!Pattern.compile(emailRegex).matcher(user.getEmail()).matches() || emailValidation(user.getEmail())) {
             return false;
         }
 
-        //check the validity of the password (strong, has at least 8 chars , 1 digit, 1 lowercase, 1 uppercase, 1 special char and no whitespace)
+        // check the validity of the password (strong, has at least 8 chars , 1 digit, 1
+        // lowercase, 1 uppercase, 1 special char and no whitespace)
         String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
         if (!Pattern.compile(passwordRegex).matcher(user.getPassword()).matches()) {
             return false;
         }
 
-        //check the validity of the number (the length and the prefix)
-        if (!(user.getPhone().startsWith("010") || user.getPhone().startsWith("011") || user.getPhone().startsWith("012")
+        // check the validity of the number (the length and the prefix)
+        if (!(user.getPhone().startsWith("010") || user.getPhone().startsWith("011")
+                || user.getPhone().startsWith("012")
                 || user.getPhone().startsWith("015")) || !(user.getPhone().length() == 11)) {
             return false;
         }
 
-        User u1 = new User(user.getName(), usersData.usersDatabase.size() + 1, user.getPhone(), user.getEmail(), user.getPassword(), user.getAddress());
+        User u1 = new User(user.getName(), usersData.usersDatabase.size(), user.getPhone(), user.getEmail(),
+                user.getPassword(), user.getAddress());
         usersData.usersDatabase.add(u1);
 
         return true; // return validated account
@@ -114,3 +111,4 @@ public class UserService implements IUserService {
         return null;
     }
 }
+

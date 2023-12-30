@@ -1,5 +1,6 @@
 package sda.orderssystem.controller;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sda.orderssystem.model.SimpleOrder;
@@ -36,9 +37,9 @@ public class OrderController {
     }
 
     @GetMapping("/get/{id}")
-    public Map<String,Object> retrieveOrderById(@PathVariable("id") int id)
+    public List<Object> retrieveOrderById(@PathVariable("id") int id)
     {
-        return orderService.retrieveOrderById(id).toMap();
+        return orderService.retrieveOrderById(id).toList();
     }
 
 }
