@@ -1,5 +1,5 @@
 package sda.orderssystem.service.NotificationService;
 
-public interface INotification {
+public class Notification implements INotification{
 
 }

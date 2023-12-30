@@ -1,11 +1,9 @@
 package sda.orderssystem.service.OrderServices;
 
-import org.apache.tomcat.util.digester.CallMethodRule;
 import org.json.*;
 import org.springframework.stereotype.Service;
 import sda.orderssystem.model.*;
 import sda.orderssystem.repository.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,7 +60,7 @@ public class OrderService {
         for (Order order : ordersDatabase.ordersDatabase) {
             if (order.getId() == id) {
                 if (order instanceof CompoundOrder) {
-                    for (Order child : ((CompoundOrder) order).getChildren()) {
+                    for (Order child : order.getChildren()) {
                         JSONObject json = new JSONObject();
                         json.put("status", child.getStatus());
                         json.put("id", child.getId());
@@ -92,7 +90,7 @@ public class OrderService {
         JSONArray orders = new JSONArray();
         for (Order order : ordersDatabase.ordersDatabase) {
             if (order instanceof CompoundOrder) {
-                for (Order child : ((CompoundOrder) order).getChildren()) {
+                for (Order child : order.getChildren()) {
                     JSONObject json = new JSONObject();
                     json.put("id", child.getId());
                     json.put("status", child.getStatus());

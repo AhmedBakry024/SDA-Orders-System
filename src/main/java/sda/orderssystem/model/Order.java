@@ -69,7 +69,7 @@ abstract public class Order {
 
     public ArrayList<Product> getProductByID(Order order) {
         ProductsDatabase db = ProductsDatabase.getInstance();
-        ArrayList<Product> products = new ArrayList<Product>();
+        ArrayList<Product> products = new ArrayList<>();
         for (int i : order.getProductsID()) {
             for (Product p : db.productsDatabase) {
                 if (i == p.getSerialNumber()) {
@@ -98,7 +98,7 @@ abstract public class Order {
 
     public Order() {
         products = new ArrayList<>();
-        productsID = new ArrayList<Integer>();
+        productsID = new ArrayList<>();
     }
     
     abstract public void addOrder(SimpleOrder order);
