@@ -110,5 +110,13 @@ public class UserService implements IUserService {
         }
         return null;
     }
+
+    public boolean changePrefrence(int id, int prefrence) {
+        User currentUser = usersData.usersDatabase.get(id);
+        if(prefrence != 1 && prefrence != 2 && prefrence != 3)
+            return false;
+        currentUser.setMessagePrefrence(prefrence);
+        return true;
+    }
 }
 

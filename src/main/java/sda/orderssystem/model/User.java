@@ -9,6 +9,9 @@ public class User {
     private String email;
     private String phone;
     private int balance;
+    private int messagePrefrence;
+
+    
 
     public User(String name, int i, String phoneNum, String email, String password, String address) {
         this.name = name;
@@ -72,8 +75,15 @@ public class User {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getMessagePrefrence() {
+        return messagePrefrence;
+    }
+    
+    public void setMessagePrefrence(int messagePrefrence) {
+            this.messagePrefrence = messagePrefrence;
+    }
 }

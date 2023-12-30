@@ -45,4 +45,10 @@ public class UserController {
     public int getBalance(@PathVariable("id") int id) {
         return userService.getBalance(id);
     }
+
+    @PutMapping("/prefrence/{id}/{prefrence}")
+    public boolean changePrefrence(@PathVariable("id") int id, @PathVariable("prefrence") int prefrence) {
+
+        return userService.changePrefrence(id, prefrence);
+    }
 }
