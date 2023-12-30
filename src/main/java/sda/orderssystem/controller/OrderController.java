@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.service.OrderServices.OrderService;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +16,15 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/add")
-    public boolean addOrder(@RequestBody ArrayList<SimpleOrder> orders) throws ParseException
+    public boolean addOrder(@RequestBody ArrayList<SimpleOrder> orders)
     {
         return orderService.addOrder(orders);
-    
     }
 
-    @DeleteMapping("/delete")
-    public boolean cancelOrder()
+    @DeleteMapping("/delete/{id}")
+    public boolean cancelOrder(@PathVariable("id") int id)
     {
-        return true;
+        return orderService.deleteOrderPlacement(id);
     }
 
     @GetMapping("/get")
@@ -39,5 +37,11 @@ public class OrderController {
     public List<Object> retrieveOrderById(@PathVariable("id") int id)
     {
         return orderService.retrieveOrderById(id).toList();
+    }
+
+    @DeleteMapping("/delete/shipment/{id}")
+    public boolean deleteOrderShipment(@PathVariable("id") int id)
+    {
+        return orderService.deleteOrderShipment(id);
     }
 }

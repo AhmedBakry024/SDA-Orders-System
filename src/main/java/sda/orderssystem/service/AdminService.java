@@ -2,7 +2,9 @@ package sda.orderssystem.service;
 
 import org.springframework.stereotype.Service;
 
+import sda.orderssystem.model.CompoundOrder;
 import sda.orderssystem.model.Product;
+import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.repository.OrdersDatabase;
 import sda.orderssystem.repository.ProductsDatabase;
 import sda.orderssystem.repository.UsersDatabase;
@@ -39,10 +41,18 @@ public class AdminService {
 
     public boolean shipOrder(int orderID) {
 
-        if (ordersDatabase.ordersDatabase.get(orderID).getStatus().equals("Placed")) {
+        if (ordersDatabase.ordersDatabase.get(orderID) instanceof SimpleOrder
+                && ordersDatabase.ordersDatabase.get(orderID).getStatus().equals("Placed")) {
             ordersDatabase.ordersDatabase.get(orderID).setStatus("Shipped");
             return true;
-        } else {
+        }
+        else if (ordersDatabase.ordersDatabase.get(orderID) instanceof CompoundOrder) {
+            for (SimpleOrder child : ((CompoundOrder) ordersDatabase.ordersDatabase.get(orderID)).getChildren()) {
+                child.setStatus("Shipped");
+            }
+            return true;
+        }
+         else {
             return false;
         }
     }

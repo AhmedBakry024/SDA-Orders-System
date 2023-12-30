@@ -10,7 +10,7 @@ public class SimpleOrder extends Order {
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
 
-    public SimpleOrder(Order order) throws ParseException {
+    public SimpleOrder(Order order) {
         super();
         this.address = order.getAddress();
         this.products = order.getProductByID(order);

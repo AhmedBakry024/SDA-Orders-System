@@ -1,5 +1,6 @@
 package sda.orderssystem.service.OrderServices;
 
+import org.apache.tomcat.util.digester.CallMethodRule;
 import org.json.*;
 import org.springframework.stereotype.Service;
 import sda.orderssystem.model.*;
@@ -16,7 +17,7 @@ public class OrderService {
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
     public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
 
-    public boolean addOrder(ArrayList<SimpleOrder> orders) throws ParseException {
+    public boolean addOrder(ArrayList<SimpleOrder> orders) {
         // Check if the database has the products that the order contains, else return
         // false.
         if (!CheckProducts(orders))
@@ -155,9 +156,24 @@ public class OrderService {
 
         for (Order order : ordersDatabase.ordersDatabase) {
             if (order.getId() == id) {
-                Date expiryDate = new Date(order.getDate().getTime() - 1000 * 60 * 60 * 24);
-
-                if (order.getStatus().equals("Shipped") && date.compareTo(expiryDate) >= 0) {
+                if (order instanceof CompoundOrder) {
+                    for (Order child : order.getChildren()) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(child.getDate());
+                        cal.add(Calendar.MINUTE, 2);
+                        Date expiryDate = cal.getTime();
+                        
+                            child.setStatus("Shipment Canceled");
+                        
+                        
+                    }
+                    return true;
+                }
+                else if (order instanceof SimpleOrder) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(order.getDate());
+                    cal.add(Calendar.MINUTE, 2);
+                    Date expiryDate = cal.getTime();
                     order.setStatus("Shipment Canceled");
                     return true;
                 } else {

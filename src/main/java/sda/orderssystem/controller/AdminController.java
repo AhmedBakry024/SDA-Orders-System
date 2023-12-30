@@ -31,8 +31,8 @@ public class AdminController {
         return adminService.addProduct(product);
     }
     
-    @PutMapping("ship/{id}")
-    public boolean shipOrder(@PathVariable int id) {
+    @PutMapping("/ship/{id}")
+    public boolean shipOrder(@PathVariable ("id") int id) {
         return adminService.shipOrder(id);
     }   
 }

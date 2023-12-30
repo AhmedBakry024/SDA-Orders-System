@@ -9,7 +9,7 @@ public class CompoundOrder extends Order {
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
 
 
-    public CompoundOrder(ArrayList<SimpleOrder> o) throws ParseException {
+    public CompoundOrder(ArrayList<SimpleOrder> o) {
         this.orders = new ArrayList<>();
         for (Order order : o) {
             this.orders.add(new SimpleOrder(order));
