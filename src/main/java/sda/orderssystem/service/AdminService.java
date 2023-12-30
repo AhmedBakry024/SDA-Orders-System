@@ -1,15 +1,9 @@
 package sda.orderssystem.service;
 
 import org.springframework.stereotype.Service;
-
-import sda.orderssystem.model.CompoundOrder;
-import sda.orderssystem.model.Product;
-import sda.orderssystem.model.SimpleOrder;
-import sda.orderssystem.repository.OrdersDatabase;
-import sda.orderssystem.repository.ProductsDatabase;
-import sda.orderssystem.service.NotificationService.Message;
-import sda.orderssystem.service.NotificationService.NotificationQueue;
-
+import sda.orderssystem.model.*;
+import sda.orderssystem.repository.*;
+import sda.orderssystem.service.NotificationService.*;
 import java.util.ArrayList;
 
 @Service
@@ -17,7 +11,8 @@ public class AdminService {
     
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
     public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
-    public NotificationQueue notificationQueue = new NotificationQueue();
+    public NotificationQueue notificationQueue = NotificationQueue.getInstance();
+    public UsersDatabase usersDatabase = UsersDatabase.getInstance();
 
     public void sampleProducts() {
         // add sample products to productsDatabase and sending parameters to Product constructor
@@ -45,12 +40,40 @@ public class AdminService {
 
         if (ordersDatabase.ordersDatabase.get(orderID) instanceof SimpleOrder
                 && ordersDatabase.ordersDatabase.get(orderID).getStatus().equals("Placed")) {
+            Order order = ordersDatabase.ordersDatabase.get(orderID);
             ordersDatabase.ordersDatabase.get(orderID).setStatus("Shipped");
+            User currentUser = usersDatabase.users.get(order.getCustomerID());
+            if (currentUser.getMessagePrefrence() == 1) {
+                ChannelFactory channelFactory = new SMSFactory();
+                channelFactory.createNotification(order);
+            } else if (currentUser.getMessagePrefrence() == 2) {
+                ChannelFactory channelFactory = new EmailFactory();
+                channelFactory.createNotification(order);
+            } else if(currentUser.getMessagePrefrence() == 3){
+                ChannelFactory channelFactory = new SMSFactory();
+                channelFactory.createNotification(order);
+                ChannelFactory channelFactory2 = new EmailFactory();
+                channelFactory2.createNotification(order);
+            }
             return true;
         }
         else if (ordersDatabase.ordersDatabase.get(orderID) instanceof CompoundOrder) {
             for (SimpleOrder child : ordersDatabase.ordersDatabase.get(orderID).getChildren()) {
                 child.setStatus("Shipped");
+                User currentUser = usersDatabase.users.get(child.getCustomerID());
+                if (currentUser.getMessagePrefrence() == 1) {
+                    ChannelFactory channelFactory = new SMSFactory();
+                    channelFactory.createNotification(child);
+                } else if (currentUser.getMessagePrefrence() == 2) {
+                    ChannelFactory channelFactory = new EmailFactory();
+                    channelFactory.createNotification(child);
+                } else if(currentUser.getMessagePrefrence() == 3){
+                    ChannelFactory channelFactory = new SMSFactory();
+                    channelFactory.createNotification(child);
+                    ChannelFactory channelFactory2 = new EmailFactory();
+                    channelFactory2.createNotification(child);
+                }
+                
             }
             return true;
         }

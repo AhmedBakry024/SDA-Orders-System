@@ -16,9 +16,9 @@ public class UserService implements IUserService {
     public boolean login(String Email, String Pass) {
         usersData.activeUser = -1;
 
-        for (int i = 0; i < usersData.usersDatabase.size(); i++) {
-            if (Email.equals(usersData.usersDatabase.get(i).getEmail())
-                    && Pass.equals(usersData.usersDatabase.get(i).getPassword())) {
+        for (int i = 0; i < usersData.users.size(); i++) {
+            if (Email.equals(usersData.users.get(i).getEmail())
+                    && Pass.equals(usersData.users.get(i).getPassword())) {
                 usersData.activeUser = i;
                 System.out.println("Login Successful!");
                 return true;
@@ -31,8 +31,8 @@ public class UserService implements IUserService {
     @Override
     public boolean emailValidation(String email) {
 
-        for (int i = 0; i < usersData.usersDatabase.size(); i++) {
-            if (email.equals(usersData.usersDatabase.get(i).getEmail())) {
+        for (int i = 0; i < usersData.users.size(); i++) {
+            if (email.equals(usersData.users.get(i).getEmail())) {
                 return true;
             }
         }
@@ -41,13 +41,13 @@ public class UserService implements IUserService {
 
     @Override
     public boolean AddBalance(int id, int balance) {
-        User currentUser = usersData.usersDatabase.get(id);
+        User currentUser = usersData.users.get(id);
         currentUser.setBalance(currentUser.getBalance() + balance);
         return true;
     }
 
     public int getBalance(int id) {
-        User currentUser = usersData.usersDatabase.get(id);
+        User currentUser = usersData.users.get(id);
         return currentUser.getBalance();
     }
 
@@ -79,9 +79,9 @@ public class UserService implements IUserService {
             return false;
         }
 
-        User u1 = new User(user.getName(), usersData.usersDatabase.size(), user.getPhone(), user.getEmail(),
+        User u1 = new User(user.getName(), usersData.users.size(), user.getPhone(), user.getEmail(),
                 user.getPassword(), user.getAddress());
-        usersData.usersDatabase.add(u1);
+        usersData.users.add(u1);
 
         return true; // return validated account
 
@@ -89,9 +89,9 @@ public class UserService implements IUserService {
 
     public User[] getAllUsers() {
         try {
-            User[] p = new User[usersData.usersDatabase.size()];
+            User[] p = new User[usersData.users.size()];
             int i = 0;
-            for (User u : usersData.usersDatabase) {
+            for (User u : usersData.users) {
                 p[i] = u;
                 i++;
             }
@@ -104,7 +104,7 @@ public class UserService implements IUserService {
 
     public User getUserById(int id) {
         try {
-            return usersData.usersDatabase.get(id);
+            return usersData.users.get(id);
         } catch (Exception e) {
             System.out.println("Exception in getPerson as" + e.getMessage());
         }
@@ -112,7 +112,7 @@ public class UserService implements IUserService {
     }
 
     public boolean changePrefrence(int id, int prefrence) {
-        User currentUser = usersData.usersDatabase.get(id);
+        User currentUser = usersData.users.get(id);
         if(prefrence != 1 && prefrence != 2 && prefrence != 3)
             return false;
         currentUser.setMessagePrefrence(prefrence);

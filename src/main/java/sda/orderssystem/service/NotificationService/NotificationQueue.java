@@ -8,7 +8,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class NotificationQueue {
 
-    private BlockingQueue<Message> notificationBlockingQueue = new LinkedBlockingQueue<>();
+    public BlockingQueue<Message> notificationBlockingQueue = new LinkedBlockingQueue<>();
+
+    private static NotificationQueue notificationQueueInstance;
+
+    private NotificationQueue() {
+    }
+
+    public static NotificationQueue getInstance() {
+        if (notificationQueueInstance == null) {
+            notificationQueueInstance = new NotificationQueue();
+        }
+        return notificationQueueInstance;
+    }
 
     public void addNotification(Message message) {
         try {

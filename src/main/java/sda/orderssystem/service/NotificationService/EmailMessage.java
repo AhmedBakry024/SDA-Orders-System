@@ -2,25 +2,11 @@ package sda.orderssystem.service.NotificationService;
 
 public class EmailMessage extends Message {
 
-    int emailCount = 0;
+    static int emailCount = 0;
     @Override
     public void sendNotification(String message) {
 
+        this.message = message;
+        emailCount++;
     }
-
-    @Override
-    public void deleteNotification(String message) {
-
-    }
-
-    @Override
-    public void shipNotification(String message) {
-
-    }
-
-    @Override
-    public void placementNotification(String message) {
-
-    }
-
 }

@@ -2,9 +2,7 @@ package sda.orderssystem.service.NotificationService;
 
 public abstract class Message {
 
-     abstract void sendNotification(String message);
-    abstract void deleteNotification(String message);
+    public String message;
 
-    abstract void shipNotification(String message);
-    abstract void placementNotification(String message);
+    abstract void sendNotification(String message);
 }

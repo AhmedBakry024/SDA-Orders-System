@@ -4,6 +4,8 @@ import org.json.*;
 import org.springframework.stereotype.Service;
 import sda.orderssystem.model.*;
 import sda.orderssystem.repository.*;
+import sda.orderssystem.service.NotificationService.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,11 +26,22 @@ public class OrderService {
         // false.. This is only for the simple order.
         if (orders.size() == 1) {
             Order order = new SimpleOrder(orders.get(0));
-            if (usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance() >= order.getTotalPrice() + 40) {
-                usersDatabase.usersDatabase.get(order.getCustomerID()).setBalance(
-                        usersDatabase.usersDatabase.get(order.getCustomerID()).getBalance()
-                                - (order.getTotalPrice() + 40));
-                updateQuantity(orders);
+            User currentUser = usersDatabase.users.get(order.getCustomerID());
+            if (currentUser.getBalance() >= order.getTotalPrice() + 40) {
+                currentUser.setBalance(currentUser.getBalance() - (order.getTotalPrice() + 40));
+                updateQuantity(order.getProducts());
+                if (currentUser.getMessagePrefrence() == 1) {
+                    ChannelFactory channelFactory = new SMSFactory();
+                    channelFactory.createNotification(order);
+                } else if (currentUser.getMessagePrefrence() == 2) {
+                    ChannelFactory channelFactory = new EmailFactory();
+                    channelFactory.createNotification(order);
+                } else if(currentUser.getMessagePrefrence() == 3) {
+                    ChannelFactory channelFactory = new SMSFactory();
+                    channelFactory.createNotification(order);
+                    ChannelFactory channelFactory2 = new EmailFactory();
+                    channelFactory2.createNotification(order);
+                }
                 ordersDatabase.ordersDatabase.add(order);
             } else
                 return false;
@@ -38,17 +51,30 @@ public class OrderService {
         } else if (orders.size() > 1) {
             Order order = new CompoundOrder(orders);
             for (Order child : order.getChildren()) {
-                if (!(usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance() >= child.getTotalPrice()
+                if (!(usersDatabase.users.get(child.getCustomerID()).getBalance() >= child.getTotalPrice()
                         + (40 / orders.size()))) {
                     return false;
                 }
             }
             for (Order child : order.getChildren()) {
-                usersDatabase.usersDatabase.get(child.getCustomerID())
-                        .setBalance(usersDatabase.usersDatabase.get(child.getCustomerID()).getBalance()
-                                - child.getTotalPrice() + (40 / orders.size()));
+                User currentUser = usersDatabase.users.get(child.getCustomerID());
+                currentUser.setBalance(currentUser.getBalance()
+                        - child.getTotalPrice() + (40 / orders.size()));
+                updateQuantity(child.getProducts());
+                if (currentUser.getMessagePrefrence() == 1) {
+                    ChannelFactory channelFactory = new SMSFactory();
+                    channelFactory.createNotification(child);
+                } else if (currentUser.getMessagePrefrence() == 2) {
+                    ChannelFactory channelFactory = new EmailFactory();
+                    channelFactory.createNotification(child);
+                } else if(currentUser.getMessagePrefrence() == 3){
+                    ChannelFactory channelFactory = new SMSFactory();
+                    channelFactory.createNotification(child);
+                    ChannelFactory channelFactory2 = new EmailFactory();
+                    channelFactory2.createNotification(child);
+                }
             }
-            updateQuantity(orders);
+            
             ordersDatabase.ordersDatabase.add(order);
         }
 
@@ -132,21 +158,19 @@ public class OrderService {
         return true;
     }
 
-    public void updateQuantity(ArrayList<SimpleOrder> orders) {
-        for (SimpleOrder order : orders) {
-            for (Product product : order.getProducts()) {
-                for (Product product2 : productsDatabase.productsDatabase) {
-                    if (product.getSerialNumber() == product2.getSerialNumber()) {
-                        product2.setQuantity(product2.getQuantity() - 1);
-                        break;
-                    }
+    public void updateQuantity(ArrayList<Product> products) {
+        for (Product product : products) {
+            for (Product product2 : productsDatabase.productsDatabase) {
+                if (product.getSerialNumber() == product2.getSerialNumber()) {
+                    product2.setQuantity((product2.getQuantity() - 1));
                 }
             }
         }
     }
 
     public boolean deleteOrderPlacement(int id) {
-        return ordersDatabase.ordersDatabase.removeIf(order -> order.getId() == id);
+        ordersDatabase.ordersDatabase.get(id).setStatus("Placement Canceled");
+        return true;
     }
 
     public boolean deleteOrderShipment(int id) {
@@ -160,14 +184,10 @@ public class OrderService {
                         cal.setTime(child.getDate());
                         cal.add(Calendar.MINUTE, 2);
                         Date expiryDate = cal.getTime();
-                        
-                            child.setStatus("Shipment Canceled");
-                        
-                        
+                        child.setStatus("Shipment Canceled");
                     }
                     return true;
-                }
-                else if (order instanceof SimpleOrder) {
+                } else if (order instanceof SimpleOrder) {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(order.getDate());
                     cal.add(Calendar.MINUTE, 2);

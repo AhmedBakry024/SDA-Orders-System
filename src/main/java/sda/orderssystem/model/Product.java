@@ -62,7 +62,7 @@ public class Product {
     }
 
     public void setQuantity(int quantity) {
-        Quantity = quantity;
+        this.Quantity = quantity;
     }
 
 }
