@@ -7,6 +7,9 @@ import sda.orderssystem.model.Product;
 import sda.orderssystem.model.SimpleOrder;
 import sda.orderssystem.repository.OrdersDatabase;
 import sda.orderssystem.repository.ProductsDatabase;
+import sda.orderssystem.service.NotificationService.Message;
+import sda.orderssystem.service.NotificationService.NotificationQueue;
+
 import java.util.ArrayList;
 
 @Service
@@ -14,6 +17,7 @@ public class AdminService {
     
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
     public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
+    public NotificationQueue notificationQueue = new NotificationQueue();
 
     public void sampleProducts() {
         // add sample products to productsDatabase and sending parameters to Product constructor
@@ -53,5 +57,9 @@ public class AdminService {
          else {
             return false;
         }
+    }
+
+    public ArrayList<Message> retrieveAllNotifications() {
+        return notificationQueue.listAllNotifications();
     }
 }
