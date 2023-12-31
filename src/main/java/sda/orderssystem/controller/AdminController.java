@@ -44,4 +44,9 @@ public class AdminController {
     public ArrayList<Message> getAllNotifications() {
         return adminService.retrieveAllNotifications();
     }
+
+    @GetMapping("/reports")
+    public String getReports() {
+        return adminService.mostUsedTemplate();
+    }
 }

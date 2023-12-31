@@ -1,5 +1,6 @@
 package sda.orderssystem.service.NotificationService;
 
+
 import sda.orderssystem.model.Order;
 
 // this is the abstract class that will be used to create the notification channels
@@ -36,5 +37,9 @@ public abstract class ChannelFactory {
                 + " is delivered. Thank you for using our store :)";
         return message;
     }
+
+    // this method will be used to get the instance of the hashmap
+    
+
 
 }

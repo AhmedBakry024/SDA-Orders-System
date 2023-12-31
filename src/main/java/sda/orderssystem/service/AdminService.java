@@ -1,10 +1,13 @@
 package sda.orderssystem.service;
 
 import org.springframework.stereotype.Service;
+
 import sda.orderssystem.model.*;
 import sda.orderssystem.repository.*;
 import sda.orderssystem.service.NotificationService.*;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This is the AdminService class.
@@ -17,6 +20,7 @@ public class AdminService {
     public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
     public NotificationQueue notificationQueue = NotificationQueue.getInstance();
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
+    public TemplateCount templateCount = TemplateCount.getInstance();
 
     // this function is used to add a new sample products to the system
     // It's recommended to use this function at first to add some sample products to
@@ -97,5 +101,28 @@ public class AdminService {
     // notification queue
     public ArrayList<Message> retrieveAllNotifications() {
         return notificationQueue.listAllNotifications();
+    }
+
+    public String mostUsedTemplate() {
+        // initialize the template count with 0 and 0
+        Entry<Integer, Integer> highest = Map.entry(0, 0);
+        for (Map.Entry<Integer, Integer> entry : templateCount.getTemplateCount().entrySet()) {
+            if (entry.getValue() > highest.getValue()) {
+                highest = entry;
+            }
+        }
+        if (highest.getKey() == 1) {
+            return "Template 1 is the most used template : \"Dear \" + CustomerName + \", your order \" + OrderId + \" is \" + OrderStatus\r\n" + //
+                    " + \". Thank you for shopping with us.\"";
+        } else if (highest.getKey() == 2) {
+            return "Template 2 is the most used template : \"Dear \" + CustomerName + \", your product \" + Product\r\n" + //
+                    "  + \" is confirmed. Thank you for shopping with us.\"";
+        } else if (highest.getKey() == 3) {
+            return "Template 3 is the most used template : \"Dear \" + CustomerName + \", your product \" + Product\r\n" + //
+                    "  + \" is shipped. Thank you for using our store \" + Vendor + \" :)\"";
+        } else {
+            return "No templates used yet";
+        }
+
     }
 }

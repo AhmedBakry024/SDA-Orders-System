@@ -11,6 +11,7 @@ public class NotificationQueue {
 
     public BlockingQueue<Message> notificationBlockingQueue = new LinkedBlockingQueue<>();
 
+
     private static NotificationQueue notificationQueueInstance;
 
     public static boolean isFirst = true;
@@ -25,6 +26,10 @@ public class NotificationQueue {
         return notificationQueueInstance;
     }
 
+
+
+    
+
     public void addNotification(Message message) {
         try {
             notificationBlockingQueue.put(message);
@@ -32,7 +37,7 @@ public class NotificationQueue {
             Thread.currentThread().interrupt();
         }
         if (isFirst) {
-            timer.scheduleAtFixedRate(task, 120000, 120000);
+            timer.scheduleAtFixedRate(automaticDeletion, 300000, 300000);
             isFirst = false;
         }
     }
@@ -69,7 +74,7 @@ public class NotificationQueue {
     }
 
     Timer timer = new Timer();
-    TimerTask task = new TimerTask() {
+    TimerTask automaticDeletion = new TimerTask() {
         @Override
         public void run() {
             deleteAllNotifications();

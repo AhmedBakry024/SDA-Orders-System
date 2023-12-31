@@ -12,6 +12,7 @@ import sda.orderssystem.repository.UsersDatabase;
 public class EmailFactory extends ChannelFactory {
 
     public NotificationQueue notificationQueue = NotificationQueue.getInstance();
+    public TemplateCount templateCount = TemplateCount.getInstance();
 
     /**
      * This method creates the email notifications.
@@ -21,6 +22,7 @@ public class EmailFactory extends ChannelFactory {
      */
     @Override
     public boolean createNotification(Order order) {
+        
         Random random = new Random();
         int randomInt = random.nextInt(1);
         User user = UsersDatabase.getInstance().users.get(order.getCustomerID());
@@ -32,13 +34,14 @@ public class EmailFactory extends ChannelFactory {
                     notificationQueue.addNotification(
                             new SMSMessage(messageTempelate2(user.getName(), product.getProductName())
                                     + " This is an Email."));
+                templateCount.incrementCount(2);
                 } else {
                     notificationQueue.addNotification(
                             new SMSMessage(
                                     messageTempelate1(user.getName(), product.getProductName(), order.getStatus())
                                             + " This is an Email."));
+                    templateCount.incrementCount(1);
                 }
-
             }
         }
         if (order.getStatus().equals("Shipped")) {
@@ -50,6 +53,7 @@ public class EmailFactory extends ChannelFactory {
                         notificationQueue.addNotification(
                                 new SMSMessage(messageTempelate3(user.getName(), product.getProductName(),
                                         product.getVendor()) + " This is an Email."));
+                        templateCount.incrementCount(3);
                     }
                 }
             }
@@ -57,9 +61,9 @@ public class EmailFactory extends ChannelFactory {
                 notificationQueue.addNotification(
                         new SMSMessage(messageTempelate3(user.getName(), product.getProductName(), product.getVendor())
                                 + " This is an Email."));
+                templateCount.incrementCount(3);
             }
         }
         return true;
     }
-
 }
