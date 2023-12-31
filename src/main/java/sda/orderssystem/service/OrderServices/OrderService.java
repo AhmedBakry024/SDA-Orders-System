@@ -202,10 +202,41 @@ public class OrderService {
         }
     }
 
+    public void returnQuantity(ArrayList<Product> products) {
+        for (Product product : products) {
+            for (Product product2 : productsDatabase.productsDatabase) {
+                if (product.getSerialNumber() == product2.getSerialNumber()) {
+                    product2.setQuantity((product2.getQuantity() + 1));
+                }
+            }
+        }
+    }
+
+    public void refund(Order order) {
+        User currentUser = usersDatabase.users.get(order.getCustomerID());
+        if(order instanceof CompoundOrder) {
+            for(Order child : order.getChildren()) {
+                currentUser.setBalance(currentUser.getBalance() + child.getTotalPrice() + 10);
+            }
+        } else if(order instanceof SimpleOrder) {
+            currentUser.setBalance(currentUser.getBalance() + order.getTotalPrice() + 40);
+        }
+    }
+
     // This function will be used to delete an order from the system.
     // BONUS PART
     public boolean deleteOrderPlacement(int id) {
-        ordersDatabase.ordersDatabase.get(id).setStatus("Placement Canceled");
+        Order currentOrder = ordersDatabase.ordersDatabase.get(id);
+        if (currentOrder instanceof CompoundOrder) {
+            for (Order child : currentOrder.getChildren()) {
+                returnQuantity(child.getProducts());
+                ordersDatabase.ordersDatabase.get(id).setStatus("Placement Canceled");
+            }
+        } else {
+            returnQuantity(currentOrder.getProducts());
+            ordersDatabase.ordersDatabase.get(id).setStatus("Placement Canceled");
+        }
+        refund(currentOrder);
         return true;
     }
 
