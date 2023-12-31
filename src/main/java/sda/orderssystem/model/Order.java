@@ -4,7 +4,10 @@ import sda.orderssystem.repository.ProductsDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 
+// this is the abstract class that will be used to implement the composite pattern
 abstract public class Order {
+
+    
     
     protected int id;
     protected Date date;

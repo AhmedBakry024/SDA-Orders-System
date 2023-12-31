@@ -3,15 +3,20 @@ package sda.orderssystem.service.UserServices;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
-
 import sda.orderssystem.model.User;
 import sda.orderssystem.repository.UsersDatabase;
 
+
+/**
+ * This class is used to implement the user services
+ * it contains the functions that are needed to implement the user services
+ */
 @Service
 public class UserService implements IUserService {
 
     UsersDatabase usersData = UsersDatabase.getInstance();
 
+    // this function is used to login to the system
     @Override
     public boolean login(String Email, String Pass) {
         usersData.activeUser = -1;
@@ -28,6 +33,7 @@ public class UserService implements IUserService {
         return false;
     }
 
+    // this function is used to check if the email is already in the system
     @Override
     public boolean emailValidation(String email) {
 
@@ -39,6 +45,7 @@ public class UserService implements IUserService {
         return false;
     }
 
+    // this function is used to add balance to the user's account
     @Override
     public boolean AddBalance(int id, int balance) {
         User currentUser = usersData.users.get(id);
@@ -46,17 +53,19 @@ public class UserService implements IUserService {
         return true;
     }
 
+    // this function is used to get the balance of the user's account
     public int getBalance(int id) {
         User currentUser = usersData.users.get(id);
         return currentUser.getBalance();
     }
 
+    // this function is used to create a new account
+    // it takes a user object as a parameter and returns true if the account was created successfully
+    // it returns false if the account wasn't created successfully
     public boolean createAccount(User user) {
-
         // check regular expressions to ensure that the name doesn't contain numbers
         if (user.getName().matches(".*\\d.*")) {
             return false;
-
         }
 
         // check the validity of the email
@@ -87,6 +96,8 @@ public class UserService implements IUserService {
 
     }
 
+    // this function is used to get all the users in the system
+    // it returns an array of users
     public User[] getAllUsers() {
         try {
             User[] p = new User[usersData.users.size()];
@@ -102,6 +113,9 @@ public class UserService implements IUserService {
         return null;
     }
 
+    // this function is used to get a user by his id
+    // it takes the id of the user as a parameter and returns the user object
+    // it returns null if the user wasn't found
     public User getUserById(int id) {
         try {
             return usersData.users.get(id);
@@ -111,6 +125,10 @@ public class UserService implements IUserService {
         return null;
     }
 
+    // this function is used to change the user's message preference
+    // it takes the id of the user and the new preference as parameters
+    // it returns true if the preference was changed successfully
+    // it returns false if the preference wasn't changed successfully
     public boolean changePrefrence(int id, int prefrence) {
         User currentUser = usersData.users.get(id);
         if(prefrence != 1 && prefrence != 2 && prefrence != 3)

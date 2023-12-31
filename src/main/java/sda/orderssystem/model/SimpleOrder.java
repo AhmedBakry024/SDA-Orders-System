@@ -4,11 +4,13 @@ import sda.orderssystem.repository.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+// this is the class that will be used to create a simple order (a leaf in the composite pattern)
 public class SimpleOrder extends Order {
 
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
 
+    // this is the constructor that will be used to create a simple order
     public SimpleOrder(Order order) {
         super();
         this.address = order.getAddress();
@@ -23,6 +25,9 @@ public class SimpleOrder extends Order {
     public SimpleOrder() {
         super();
     }
+
+    // these functions are the ones that are needed to implement the composite pattern
+    // but they are not implemented in this class because it is a leaf
 
     @Override
     public Order getChild(int i) {

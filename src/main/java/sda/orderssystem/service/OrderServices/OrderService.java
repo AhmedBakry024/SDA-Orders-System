@@ -5,10 +5,15 @@ import org.springframework.stereotype.Service;
 import sda.orderssystem.model.*;
 import sda.orderssystem.repository.*;
 import sda.orderssystem.service.NotificationService.*;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+/**
+ * This is the service class that will be used to implement the business logic
+ * of the order system. It will be used to add orders, retrieve orders, and
+ * delete orders.
+ */
 
 @Service
 public class OrderService {
@@ -17,6 +22,14 @@ public class OrderService {
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
     public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
 
+    /**
+     * This function will be used to add an order to the system. It will check if the
+     * user has enough balance to pay for the order, and if the products are
+     * available in the database. It returns true if the order is added, and false
+     * if the order is not added.
+     * @param orders
+     * @return boolean
+     */
     public boolean addOrder(ArrayList<SimpleOrder> orders) {
         // Check if the database has the products that the order contains, else return
         // false.
@@ -36,7 +49,7 @@ public class OrderService {
                 } else if (currentUser.getMessagePrefrence() == 2) {
                     ChannelFactory channelFactory = new EmailFactory();
                     channelFactory.createNotification(order);
-                } else if(currentUser.getMessagePrefrence() == 3) {
+                } else if (currentUser.getMessagePrefrence() == 3) {
                     ChannelFactory channelFactory = new SMSFactory();
                     channelFactory.createNotification(order);
                     ChannelFactory channelFactory2 = new EmailFactory();
@@ -61,32 +74,41 @@ public class OrderService {
                 currentUser.setBalance(currentUser.getBalance()
                         - child.getTotalPrice() + (40 / orders.size()));
                 updateQuantity(child.getProducts());
+
+                // This is the part where the notifications are created.
+                // It checks the user's message preference and creates the notifications accordingly.
                 if (currentUser.getMessagePrefrence() == 1) {
                     ChannelFactory channelFactory = new SMSFactory();
                     channelFactory.createNotification(child);
                 } else if (currentUser.getMessagePrefrence() == 2) {
                     ChannelFactory channelFactory = new EmailFactory();
                     channelFactory.createNotification(child);
-                } else if(currentUser.getMessagePrefrence() == 3){
+                } else if (currentUser.getMessagePrefrence() == 3) {
                     ChannelFactory channelFactory = new SMSFactory();
                     channelFactory.createNotification(child);
                     ChannelFactory channelFactory2 = new EmailFactory();
                     channelFactory2.createNotification(child);
                 }
             }
-            
+
             ordersDatabase.ordersDatabase.add(order);
         }
 
         return true;
     }
 
+    // This function will be used to retrieve an order by its id.
+    // It takes the id as a parameter and returns the order as a JSON object.
+    // If the order is a compound order, it will return all the child orders.
+    // The JSON object will contain the order id, status, customer id, products,
+    // total price, and date.
     public JSONArray retrieveOrderById(int id) {
         JSONArray array = new JSONArray();
         for (Order order : ordersDatabase.ordersDatabase) {
             if (order.getId() == id) {
                 if (order instanceof CompoundOrder) {
                     for (Order child : order.getChildren()) {
+
                         JSONObject json = new JSONObject();
                         json.put("status", child.getStatus());
                         json.put("id", child.getId());
@@ -112,6 +134,12 @@ public class OrderService {
         return null;
     }
 
+
+    // This function will be used to retrieve all the orders in the system.
+    // It returns all the orders as a JSON array.
+    // If the order is a compound order, it will return all the child orders.
+    // The JSON object will contain the order id, status, customer id, products,
+    // total price, and date.
     public JSONArray retrieveAllOrders() {
         JSONArray orders = new JSONArray();
         for (Order order : ordersDatabase.ordersDatabase) {
@@ -141,6 +169,10 @@ public class OrderService {
         return orders;
     }
 
+    // This function will check if the products in the order are available in the
+    // database.
+    // It takes the order as a parameter and returns true if the products are
+    // available, and false if they are not.
     public boolean CheckProducts(ArrayList<SimpleOrder> orders) {
         for (SimpleOrder order : orders) {
             for (Product product : order.getProducts()) {
@@ -158,6 +190,8 @@ public class OrderService {
         return true;
     }
 
+    // This function will be used to update the quantity of the products in the
+    // database. It takes the order as a parameter and returns nothing.
     public void updateQuantity(ArrayList<Product> products) {
         for (Product product : products) {
             for (Product product2 : productsDatabase.productsDatabase) {
@@ -168,14 +202,20 @@ public class OrderService {
         }
     }
 
+    // This function will be used to delete an order from the system.
+    // BONUS PART
     public boolean deleteOrderPlacement(int id) {
         ordersDatabase.ordersDatabase.get(id).setStatus("Placement Canceled");
         return true;
     }
 
+
+    // This function will be used to delete an order shipment from the system.
+    // It checks if the order is made from two minutes or less, else it will not
+    // cancel the order shipment.
+    // BONUS PART
     public boolean deleteOrderShipment(int id) {
         Date date = Calendar.getInstance().getTime();
-
         for (Order order : ordersDatabase.ordersDatabase) {
             if (order.getId() == id) {
                 if (order instanceof CompoundOrder) {

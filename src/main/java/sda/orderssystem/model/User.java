@@ -12,7 +12,7 @@ public class User {
     private int messagePrefrence;
 
     
-
+    // Constructor for User class 
     public User(String name, int i, String phoneNum, String email, String password, String address) {
         this.name = name;
         this.id = i;

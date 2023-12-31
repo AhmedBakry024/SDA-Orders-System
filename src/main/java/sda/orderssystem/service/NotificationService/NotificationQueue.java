@@ -1,8 +1,9 @@
 package sda.orderssystem.service.NotificationService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,6 +12,8 @@ public class NotificationQueue {
     public BlockingQueue<Message> notificationBlockingQueue = new LinkedBlockingQueue<>();
 
     private static NotificationQueue notificationQueueInstance;
+
+    public static boolean isFirst = true;
 
     private NotificationQueue() {
     }
@@ -27,6 +30,10 @@ public class NotificationQueue {
             notificationBlockingQueue.put(message);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        }
+        if (isFirst) {
+            timer.scheduleAtFixedRate(task, 120000, 120000);
+            isFirst = false;
         }
     }
 
@@ -47,6 +54,10 @@ public class NotificationQueue {
         }
     }
 
+    public void deleteAllNotifications() {
+        notificationBlockingQueue.clear();
+    }
+
     public ArrayList<Message> listAllNotifications() {
         ArrayList<Message> array = new ArrayList<>();
         Iterator<Message> iterator = notificationBlockingQueue.iterator();
@@ -56,5 +67,15 @@ public class NotificationQueue {
         }
         return array;
     }
+
+    Timer timer = new Timer();
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            deleteAllNotifications();
+        }
+    };
+
+    
 
 }

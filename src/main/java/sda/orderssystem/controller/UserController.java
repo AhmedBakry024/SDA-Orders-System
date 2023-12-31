@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
+    // All the methods in this class are used to test the functionality of the system
+    // if the return type is boolean then it will return true if the operation was successful
+    // if the return type is an array then it will return the array of objects
+
     @Autowired
     UserService userService;
 

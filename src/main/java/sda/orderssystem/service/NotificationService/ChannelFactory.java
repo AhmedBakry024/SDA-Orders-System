@@ -2,10 +2,17 @@ package sda.orderssystem.service.NotificationService;
 
 import sda.orderssystem.model.Order;
 
+// this is the abstract class that will be used to create the notification channels
+// it is implemented as a factory
 public abstract class ChannelFactory {
 
+    // this method will be used to create the notification in the concrete factories
     public abstract boolean createNotification(Order order);
 
+    // these four methods will be used as a template for the messages
+    // they will be used in the concrete factories
+    // Each factory will use the template that is suitable for the channel
+    // each template has a different message, different number of placeholders and different situations 
     public String messageTempelate1(String CustomerName, String OrderId, String OrderStatus) {
         String message = "Dear " + CustomerName + ", your order " + OrderId + " is " + OrderStatus
                 + ". Thank you for shopping with us.";

@@ -6,16 +6,25 @@ import sda.orderssystem.repository.*;
 import sda.orderssystem.service.NotificationService.*;
 import java.util.ArrayList;
 
+/**
+ * This is the AdminService class.
+ * It contains the methods that will be used by the admin.
+ */
 @Service
 public class AdminService {
-    
+
     public OrdersDatabase ordersDatabase = OrdersDatabase.getInstance();
     public ProductsDatabase productsDatabase = ProductsDatabase.getInstance();
     public NotificationQueue notificationQueue = NotificationQueue.getInstance();
     public UsersDatabase usersDatabase = UsersDatabase.getInstance();
 
+    // this function is used to add a new sample products to the system
+    // It's recommended to use this function at first to add some sample products to
+    // the system
+    // so that you can test the functionality of the system
     public void sampleProducts() {
-        // add sample products to productsDatabase and sending parameters to Product constructor
+        // add sample products to productsDatabase and sending parameters to Product
+        // constructor
         productsDatabase.productsDatabase.add(new Product(1, "Five Feet Apart", "Diwan", "Books", 100, 100));
         productsDatabase.productsDatabase.add(new Product(2, "Lipgloss", "Amanda", "Beauty", 200, 50));
         productsDatabase.productsDatabase.add(new Product(3, "T-Shirt", "LCWaikiki", "Clothes", 300, 100));
@@ -28,16 +37,21 @@ public class AdminService {
 
     }
 
+    // this function is used to retrieve all the products in the system
     public ArrayList<Product> retrieveAllProducts() {
         return productsDatabase.productsDatabase;
     }
 
+    // this function is used to add a new product to the system
     public boolean addProduct(Product product) {
         return productsDatabase.productsDatabase.add(product);
     }
 
+    // this function is used to ship an order
+    // it takes the order id as a parameter and returns true if the order was
+    // shipped successfully
+    // Admin can only ship orders that are placed
     public boolean shipOrder(int orderID) {
-
         if (ordersDatabase.ordersDatabase.get(orderID) instanceof SimpleOrder
                 && ordersDatabase.ordersDatabase.get(orderID).getStatus().equals("Placed")) {
             Order order = ordersDatabase.ordersDatabase.get(orderID);
@@ -49,15 +63,14 @@ public class AdminService {
             } else if (currentUser.getMessagePrefrence() == 2) {
                 ChannelFactory channelFactory = new EmailFactory();
                 channelFactory.createNotification(order);
-            } else if(currentUser.getMessagePrefrence() == 3){
+            } else if (currentUser.getMessagePrefrence() == 3) {
                 ChannelFactory channelFactory = new SMSFactory();
                 channelFactory.createNotification(order);
                 ChannelFactory channelFactory2 = new EmailFactory();
                 channelFactory2.createNotification(order);
             }
             return true;
-        }
-        else if (ordersDatabase.ordersDatabase.get(orderID) instanceof CompoundOrder) {
+        } else if (ordersDatabase.ordersDatabase.get(orderID) instanceof CompoundOrder) {
             for (SimpleOrder child : ordersDatabase.ordersDatabase.get(orderID).getChildren()) {
                 child.setStatus("Shipped");
                 User currentUser = usersDatabase.users.get(child.getCustomerID());
@@ -67,21 +80,21 @@ public class AdminService {
                 } else if (currentUser.getMessagePrefrence() == 2) {
                     ChannelFactory channelFactory = new EmailFactory();
                     channelFactory.createNotification(child);
-                } else if(currentUser.getMessagePrefrence() == 3){
+                } else if (currentUser.getMessagePrefrence() == 3) {
                     ChannelFactory channelFactory = new SMSFactory();
                     channelFactory.createNotification(child);
                     ChannelFactory channelFactory2 = new EmailFactory();
                     channelFactory2.createNotification(child);
                 }
-                
             }
             return true;
-        }
-         else {
+        } else {
             return false;
         }
     }
 
+    // this function is used to get all the notifications in the system from the
+    // notification queue
     public ArrayList<Message> retrieveAllNotifications() {
         return notificationQueue.listAllNotifications();
     }

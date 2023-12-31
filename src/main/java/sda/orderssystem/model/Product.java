@@ -8,6 +8,8 @@ public class Product {
     private int Price;
     private int Quantity;
 
+
+    // this is a constructor for the Product class
     public Product(int serialNumber, String productName, String vendor, String category, int price, int quantity) {
         SerialNumber = serialNumber;
         ProductName = productName;
@@ -64,5 +66,4 @@ public class Product {
     public void setQuantity(int quantity) {
         this.Quantity = quantity;
     }
-
 }
